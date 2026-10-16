@@ -1,12 +1,248 @@
-﻿<Window x:Class="Envialo.MainWindow"
+<Window x:Class="Envialo.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Envialo"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Envíalo"
+        Icon="envialo.ico"
+        Height="770"
+        Width="1000"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize"
+        Background="#221F1D"
+        TextOptions.TextFormattingMode="Display"
+        TextOptions.TextRenderingMode="Grayscale"
+        UseLayoutRounding="True">
+
+    <Grid Margin="20">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="220"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="180"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- TITLE -->
+
+        <TextBlock Grid.Row="0"
+                   Text="ENVÍALO"
+                   Foreground="White"
+                   FontSize="28"
+                   FontWeight="Bold"
+                   Margin="0,0,0,2"/>
+
+        <TextBlock Grid.Row="1"
+                   Text="Share files instantly, no cables needed 🚀"
+                   Foreground="#AAAAAA"
+                   FontSize="13"
+                   Margin="0,0,0,15"/>
+
+        <!-- DEVICE NAME -->
+
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal"
+                    Margin="0,0,0,15">
+
+            <TextBlock Text="Your name:"
+                       Foreground="White"
+                       FontSize="14"
+                       VerticalAlignment="Center"
+                       Margin="0,0,10,0"/>
+
+            <TextBox Name="DeviceNameBox"
+                     Width="200"
+                     Height="30"
+                     FontSize="13"
+                     VerticalContentAlignment="Center"/>
+
+            <Button Content="Save"
+                    Width="80"
+                    Height="30"
+                    Margin="8,0,0,0"
+                    FontSize="13"
+                    Click="SaveDeviceName_Click"/>
+
+        </StackPanel>
+
+        <!-- TOP CONTROLS -->
+
+        <StackPanel Grid.Row="3"
+                    Orientation="Horizontal"
+                    Margin="0,0,0,15">
+
+            <TextBlock Text="Mode:"
+                       Foreground="White"
+                       FontSize="16"
+                       VerticalAlignment="Center"
+                       Margin="0,0,10,0"/>
+
+            <ComboBox Name="ModeBox"
+                      Width="150"
+                      Height="32"
+                      FontSize="14">
+
+                <ComboBoxItem Content="Student"/>
+                <ComboBoxItem Content="Teacher"/>
+
+            </ComboBox>
+
+            <TextBlock Name="DiscoveryStatusText"
+                       Text="Looking for classmates... 👀"
+                       Foreground="#8FBF8F"
+                       FontSize="14"
+                       VerticalAlignment="Center"
+                       Margin="40,0,0,0"/>
+
+        </StackPanel>
+
+        <!-- DRAG DROP / DEVICE AREA -->
+
+        <Border Grid.Row="4"
+                BorderBrush="#4A4540"
+                BorderThickness="2"
+                CornerRadius="14"
+                Background="#2B2724"
+                AllowDrop="True"
+                Drop="DropArea_Drop"
+                DragOver="DropArea_DragOver">
+
+            <Grid>
+
+                <ListBox Name="DeviceList"
+                         Foreground="White"
+                         FontSize="16"
+                         Padding="10"/>
+
+                <TextBlock Text="Drag &amp; drop files here 📥"
+                           Foreground="#777"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           IsHitTestVisible="False"/>
+
+            </Grid>
+
+        </Border>
+
+        <!-- SEND BUTTONS -->
+
+        <StackPanel Grid.Row="5"
+                    Orientation="Horizontal"
+                    Margin="0,15,0,10">
+
+            <Button Name="SendFileButton"
+                    Content="📤 Send File(s)"
+                    Width="160"
+                    Height="42"
+                    FontSize="14"
+                    Click="SendFileButton_Click"/>
+
+            <Button Name="SendFolderButton"
+                    Content="📁 Send Folder"
+                    Width="160"
+                    Height="42"
+                    Margin="12,0,0,0"
+                    FontSize="14"
+                    Click="SendFolderButton_Click"/>
+
+            <Button Name="SendAllButton"
+                    Content="📢 SEND TO ALL"
+                    Width="160"
+                    Height="42"
+                    Margin="12,0,0,0"
+                    FontSize="14"
+                    Click="SendAllButton_Click"/>
+
+            <Button Name="HistoryButton"
+                    Content="🕒 View History"
+                    Width="140"
+                    Height="42"
+                    Margin="12,0,0,0"
+                    FontSize="14"
+                    Click="HistoryButton_Click"/>
+
+        </StackPanel>
+
+        <!-- TRANSFER QUEUE -->
+
+        <TextBlock Grid.Row="6"
+                   Text="📦 Transfer Queue"
+                   Foreground="White"
+                   FontSize="16"
+                   FontWeight="Bold"
+                   Margin="0,0,0,8"
+                   VerticalAlignment="Top"/>
+
+        <Border Grid.Row="6"
+                BorderBrush="#4A4540"
+                BorderThickness="1"
+                CornerRadius="12"
+                Background="#2B2724"
+                Margin="0,28,0,0">
+
+            <ListBox Name="QueueList"
+                     Padding="8">
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="260"/>
+                                <ColumnDefinition Width="160"/>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0"
+                                       Text="{Binding FileName}"
+                                       Foreground="White"
+                                       FontSize="13"
+                                       TextTrimming="CharacterEllipsis"/>
+
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding TargetDevice}"
+                                       Foreground="#AAAAAA"
+                                       FontSize="13"/>
+
+                            <TextBlock Grid.Column="2"
+                                       Text="{Binding Status}"
+                                       Foreground="#8FBF8F"
+                                       FontSize="13"/>
+
+                            <ProgressBar Grid.Column="3"
+                                         Value="{Binding Progress}"
+                                         Minimum="0"
+                                         Maximum="100"
+                                         Height="16"
+                                         VerticalAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+            </ListBox>
+
+        </Border>
+
+        <!-- PROGRESS (overall / current) -->
+
+        <ProgressBar Grid.Row="7"
+                     Name="TransferProgress"
+                     Height="18"
+                     Margin="0,15,0,8"
+                     Minimum="0"
+                     Maximum="100"/>
+
+        <!-- STATUS -->
+
+        <TextBlock Grid.Row="8"
+                   Name="StatusText"
+                   Foreground="White"
+                   FontSize="14"/>
 
     </Grid>
 </Window>

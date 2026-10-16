@@ -6,6 +6,15 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>envialo.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="envialo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="envialo.ico" />
+  </ItemGroup>
 
 </Project>

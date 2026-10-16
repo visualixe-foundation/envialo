@@ -427,3 +427,8 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Envialo runtime/user data - never commit
+pin.dat
+device_name.txt
+firewall_setup.done
